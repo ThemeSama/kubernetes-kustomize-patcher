@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "noImplicitAny": false,
+    "target": "es2019",
+    "lib": ["es2023"],
+    "moduleResolution": "nodenext",
+    "removeComments": false,
+    "sourceMap": true,
+    "noLib": false,
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": false
+  },
+  "exclude": ["node_modules", "src/*_test.ts", "src/test", "dist"],
+  "include": ["*.ts", "src/**/*"]
+}
