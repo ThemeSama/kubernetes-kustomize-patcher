@@ -1,0 +1,69 @@
+{{- if .Values.certManager.enabled -}}
+{{- if not .Values.certManager.issuerRef -}}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: kustomize-patcher-self-signed-issuer
+  namespace: {{ .Release.Namespace }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kustomize-patcher-root-cert
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: kustomize-patcher-root-cert
+  privateKey:
+    rotationPolicy: Always
+  duration: {{ .Values.certManager.rootCert.duration | default "43800h0m0s" | quote }}
+  {{- if gt (.Values.certManager.rootCert.revisionHistoryLimit | int) 0 }}
+  revisionHistoryLimit: {{ .Values.certManager.rootCert.revisionHistoryLimit }}
+  {{- end }}
+  issuerRef:
+    name: kustomize-patcher-self-signed-issuer
+  commonName: "ca.webhook.kustomize-patcher"
+  isCA: true
+  subject:
+    organizations:
+      - kustomize-patcher
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: kustomize-patcher-root-issuer
+  namespace: {{ .Release.Namespace }}
+spec:
+  ca:
+    secretName: kustomize-patcher-root-cert
+{{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.certificate.secretName }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  secretName: {{ .Values.certificate.secretName }}
+  privateKey:
+    rotationPolicy: Always
+  duration: {{ .Values.certManager.admissionCert.duration | default "8760h0m0s" | quote }}
+  {{- if gt (.Values.certManager.admissionCert.revisionHistoryLimit | int) 0 }}
+  revisionHistoryLimit: {{ .Values.certManager.admissionCert.revisionHistoryLimit }}
+  {{- end }}
+  issuerRef:
+    {{- if .Values.certManager.issuerRef }}
+    {{- toYaml .Values.certManager.issuerRef | nindent 4 }}
+    {{- else }}
+    name: kustomize-patcher-root-issuer
+    {{- end }}
+  dnsNames:
+    - kustomize-patcher-svc
+    - kustomize-patcher-svc.{{ .Release.Namespace }}
+    - kustomize-patcher-svc.{{ .Release.Namespace }}.svc
+    - kustomize-patcher-svc.{{ .Release.Namespace }}.svc.cluster.local
+  subject:
+    organizations:
+      - kustomize-patcher-admission
+{{- end -}}
