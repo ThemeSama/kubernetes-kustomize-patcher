@@ -1,0 +1,26 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: kustomize-patcher-webhook
+  annotations:
+  {{- if .Values.certManager.enabled }}
+    certmanager.k8s.io/inject-ca-from: {{ printf "%s/%s" .Release.Namespace .Values.certificate.secretName | quote }}
+    cert-manager.io/inject-ca-from: {{ printf "%s/%s" .Release.Namespace .Values.certificate.secretName | quote }}
+  {{- end }}
+webhooks:
+  - name: kustomize-patcher.{{ .Release.Name }}.com
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
+    failurePolicy: {{ .Values.webhook.failurePolicy }}
+    clientConfig:
+      service:
+        name: kustomize-patcher-svc
+        namespace: {{ .Release.Namespace }}
+        path: /mutate
+        port: 443
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        resources: ["deployments"]

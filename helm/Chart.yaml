@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kustomize-patcher
+description: Helm chart for A simple application for patching deployment definitions
+type: application
+version: 0.1.0
+appVersion: "latest"
