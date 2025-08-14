@@ -16,7 +16,7 @@ This chart bootstraps an kustomize-patcher deployment on a [Kubernetes](http://k
 ## Get Repo Info
 
 ```console
-helm repo add kustomize-patcher https://themesama.github.io/kubernetes-kustomize-patcher/helm/
+helm repo add kustomize-patcher https://themesama.github.io/kubernetes-kustomize-patcher
 helm repo update
 ```
 
@@ -125,11 +125,7 @@ _See [helm upgrade](https://helm.sh/docs/helm/helm_upgrade/) for command documen
 
 ## Configuration
 
-See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml), or run these configuration commands:
-
-```console
-helm show values kustomize-patcher/kustomize-patcher
-```
+See [Customizing the Chart Before Installing](https://helm.sh/docs/intro/using_helm/#customizing-the-chart-before-installing). To see all configurable options with detailed comments, visit the chart's [values.yaml](./values.yaml).
 
 #### Required Tools
 It should be possible to use [cert-manager/cert-manager](https://github.com/cert-manager/cert-manager) if a more complete solution is required.
