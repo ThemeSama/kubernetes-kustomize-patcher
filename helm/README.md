@@ -32,7 +32,7 @@ _See [configuration](#configuration) below._
 
 _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documentation._
 
-## Usage
+## Usage
 
 For example, if you need to apply a patch to a previously deployed or newly added Deployment definition, you must add certain PatchDeployment definitions to ensure the patch is reflected before the change.
 
