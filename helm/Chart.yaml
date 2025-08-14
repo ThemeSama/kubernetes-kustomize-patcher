@@ -1,0 +1,19 @@
+apiVersion: v2
+name: kustomize-patcher
+description: Helm chart for A simple application for patching deployment definitions
+type: application
+version: 0.1.0
+appVersion: "latest"
+home: https://github.com/ThemeSama/kubernetes-kustomize-patcher
+keywords:
+- deployment
+- kustomize
+- patch
+- target-deployment
+- modify-resources
+kubeVersion: '>=1.28.0-0'
+maintainers:
+- name: themesama
+sources:
+- https://github.com/ThemeSama/kubernetes-kustomize-patcher/tree/main/helm
+icon: https://raw.githubusercontent.com/ThemeSama/kubernetes-kustomize-patcher/refs/heads/main/public/icon.png

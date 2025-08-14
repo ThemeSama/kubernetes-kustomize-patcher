@@ -1,0 +1,44 @@
+image:
+  repository: ghcr.io/themesama/kubernetes-kustomize-patcher
+  tag: latest
+  pullPolicy: Always
+
+replicaCount: 1
+
+service:
+  port: 443
+
+certificate:
+  secretName: kustomize-patcher-webhook-cert
+
+webhook:
+  timeoutSeconds: 5
+  failurePolicy: Ignore
+
+certManager:
+  enabled: true
+  rootCert:
+    duration: "43800h0m0s"
+    revisionHistoryLimit: 0
+  admissionCert:
+    duration: "8760h0m0s"
+    revisionHistoryLimit: 0
+  issuerRef:
+
+serviceAccount:
+  create: true
+  name: kustomize-patcher-sa
+
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 5
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 3
