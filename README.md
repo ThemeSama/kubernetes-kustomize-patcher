@@ -23,7 +23,7 @@ helm repo update
 ## Install Chart
 
 ```console
-helm install [RELEASE_NAME] kustomize-patcher
+helm install [RELEASE_NAME] kustomize-patcher/kustomize-patcher
 ```
 
 The command deploys kustomize-patcher on the Kubernetes cluster in the default configuration.
@@ -43,6 +43,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  namespace: default
   labels:
     app: nginx
 spec:
@@ -73,6 +74,7 @@ apiVersion: themesama.com/v1alpha1
 kind: PatchDeployment
 metadata:
   name: nginx-resources
+  namespace: default
   labels:
     target-deployment: "nginx-deployment"
 spec:
@@ -94,6 +96,7 @@ apiVersion: themesama.com/v1alpha1
 kind: PatchDeployment
 metadata:
   name: nginx-x-replicas
+  namespace: default
   labels:
     target-deployment: "nginx-deployment"
 spec:
