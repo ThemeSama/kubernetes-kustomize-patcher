@@ -5,7 +5,8 @@ import fs from "fs";
 import path from "path";
 import { getDeploymentPatch } from "./operations/get-deployment-patch.js";
 import { now } from "./helper/date.js";
-import { createPatch } from "rfc6902";
+import { create } from "jsondiffpatch";
+import { format } from "jsondiffpatch/formatters/jsonpatch";
 import { updatePatchDeploymentCount } from "./operations/update-patch-deployment-count.js";
 
 const app = express();
@@ -34,11 +35,21 @@ app.post("/mutate", async (req: Request, res: Response) => {
   // get patches
   const patchDetails = await getDeploymentPatch(deploymentName, namespace);
 
+  // jsondiffpatch
+  const jdp = create({
+    objectHash: (obj: any) => obj?.name || obj?.mountPath || obj?.containerPort,
+    arrays: { detectMove: false, includeValueOnMove: false },
+  });
+
   if (Array.isArray(patchDetails) && patchDetails.length) {
     const patchList = patchDetails
-      .map((patchDetail) =>
-        createPatch(admissionReview.request.object, patchDetail?.spec.patch)
-      )
+      .map((patchDetail) => {
+        const delta = jdp.diff(
+          admissionReview.request.object,
+          patchDetail?.spec.patch
+        );
+        return format(delta);
+      })
       .flat(1);
 
     const additivePatch = patchList.filter(
