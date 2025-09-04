@@ -2,7 +2,7 @@ apiVersion: v2
 name: kustomize-patcher
 description: Helm chart for A simple application for patching deployment definitions
 type: application
-version: 0.1.0
+version: 1.0.1
 appVersion: "latest"
 home: https://github.com/ThemeSama/kubernetes-kustomize-patcher
 keywords:
